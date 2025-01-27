@@ -9,15 +9,15 @@
   <!-- jQuery (for easier AJAX handling) -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
-    body {
-      margin: 0; /* Remove any gaps above/below */
-      background-color: #f8f9fa; /* Light background */
+   body {
+      margin: 0;
+      background-color: #f8f9fa; /* Light gray background */
       font-family: 'Arial', sans-serif;
     }
     .navbar {
       background-color: #ffffff; /* White navbar */
       padding: 0.5rem 1rem;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
     }
     .navbar-brand {
       font-weight: bold;
@@ -46,7 +46,45 @@
       background-color: #084298; /* Darker blue on hover */
     }
     .container {
-      margin-top: 2rem;
+      margin-top: 5rem; /* Space below navbar */
+      width: 50%; /* Reduced container width */
+    }
+    h2 {
+      font-weight: bold;
+      color: #000000; /* Black text for headings */
+      margin-bottom: 1rem;
+    }
+    .form-container {
+      background: #ffffff; /* White card-style form */
+      padding: 2rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .form-label {
+      font-weight: 500;
+      color: #333333; /* Darker text */
+    }
+    .btn-submit {
+      background-color: #0d6efd; /* Blue button */
+      color: #ffffff;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border-radius: 0.25rem;
+      width: 100%; /* Full width button */
+      margin-top: 1rem;
+    }
+    .btn-submit:hover {
+      background-color: #084298; /* Darker blue on hover */
+    }
+    .btn-back {
+      color: #ffffff;
+      background-color: #6c757d; /* Secondary gray button */
+      border: none;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border-radius: 0.25rem;
+      margin-right: 1rem;
     }
     #nameList {
   max-height: 200px; /* Set the height limit as needed */
@@ -54,9 +92,14 @@
   border: 1px solid #ddd; /* Optional, just to make it visible */
   border-radius: 0.25rem;
 }
-    h2 {
-      font-weight: bold;
-      color: #000000; /* Black text for titles */
+    .btn-back:hover {
+      background-color: #5a6268; /* Darker gray on hover */
+    }
+    #resultMessage {
+      margin-top: 1rem; /* Add spacing only when visible */
+    }
+    .d-none {
+      display: none;
     }
   </style>
 </head>
@@ -66,33 +109,29 @@
 
   <!-- Main Content -->
   <div class="container mt-5">
-    <h2>Datewise downloads</h2>
-    
-    <!-- Result Message -->
-    <div id="resultMessage" class="<%= message.text ? '' : 'd-none' %>">
-      <% if (message && message.text) { %>
-        <div class="alert alert-<%= message.type %>" role="alert">
-          <%= message.text %>
+    <h2>Datewise Downloads</h2>
+    <div class="form-container">
+      <div id="resultMessage" class="<%= message.text ? '' : 'd-none' %>">
+        <% if (message && message.text) { %>
+          <div class="alert alert-<%= message.type %>" role="alert">
+            <%= message.text %>
+          </div>
+        <% } %>
+      </div>
+      
+      <form action="/facultyleavesinfo/leaves/dateWise" method="POST" onsubmit="return validateForm()">
+        <div class="mb-3">
+          <label for="date" class="form-label">Select Date:</label>
+          <input type="date" name="date" id="date" class="form-control" placeholder="Choose a date">
         </div>
-      <% } %>
+        <div class="mb-3">
+          <label for="fname" class="form-label">Search Faculty Name:</label>
+          <input type="text" id="fname" name="fname" class="form-control" placeholder="Start typing faculty name..." autocomplete="off">
+          <ul id="nameList" class="list-group d-none"></ul>
+        </div>
+        <button type="submit" class="btn btn-primary">Filter</button>
+      </form>
     </div>
-
-    <!-- Date Filter Form -->
-    <form action="/facultyleavesinfo/leaves/dateWise" method="POST" onsubmit="return validateForm()">
-      <div class="mb-3">
-        <label for="date" class="form-label">Select Date:</label>
-        <input type="date" name="date" id="date" class="form-control" placeholder="Choose a date">
-      </div>
-      
-      <!-- Name Search Input -->
-      <div class="mb-3">
-        <label for="fname" class="form-label">Search Faculty Name:</label>
-        <input type="text" id="fname" name="fname" class="form-control" placeholder="Start typing faculty name..." autocomplete="off">
-        <ul id="nameList" class="list-group d-none"></ul>
-      </div>
-      
-      <button type="submit" class="btn btn-primary">Filter</button>
-    </form>
   </div>
 
   <!-- Bootstrap JS -->
